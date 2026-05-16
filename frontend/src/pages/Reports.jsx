@@ -23,11 +23,17 @@ function Reports() {
   const absent = records.filter(r => r.status === 'Absent').length
   const totalDays = new Set(records.map(r => r.date)).size
   const pieData = [{ name: 'Present', value: present }, { name: 'Absent', value: absent }]
-  const barData = records.map(r => ({
-    date: r.date,
-    Present: r.status === 'Present' ? 1 : 0,
-    Absent: r.status === 'Absent' ? 1 : 0
-  }))
+  
+  const barData = Object.values(
+    records.reduce((acc, r) => {
+      if (!acc[r.date]) {
+        acc[r.date] = { date: r.date, Present: 0, Absent: 0 }
+      }
+      acc[r.date][r.status] += 1
+      return acc
+    }, {})
+  )
+
   const COLORS = ['#22c55e', '#ef4444']
 
   return (
