@@ -77,4 +77,4 @@ function Attendance() {
               ) : (
                 records.map(record => (
                   <tr key={record._id} style={{ borderBottom:'1px solid #334155' }}>
-                    <td style={{ padding:'10px', color:'white' }}
+                    <td style={{ padding:'10px', color:'white' }}>{record.date}</td>
