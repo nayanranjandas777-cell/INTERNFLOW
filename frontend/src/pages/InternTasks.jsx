@@ -23,7 +23,7 @@ function InternTasks() {
   const updateStatus = async (taskId, status) => {
     try {
       await axios.put(
-        `https://internflow-hf1d.onrender.com/api/tasks/${taskId}/status`,
+        `https://internflow-hf1d.onrender.com/api/tasks/status/${taskId}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       )

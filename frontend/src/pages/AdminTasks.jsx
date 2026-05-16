@@ -16,10 +16,14 @@ function AdminTasks() {
     intern: '', title: '', description: '', deadline: ''
   })
   const [message, setMessage] = useState('')
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    const fetchData = async () => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
       const internsRes = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/auth/interns`,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -30,13 +34,13 @@ function AdminTasks() {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setTasks(tasksRes.data)
+    } catch (err) {
+      console.log(err)
     }
-    fetchData()
-  }, [])
+  }
 
   const handleAssign = async () => {
     try {
-      const token = localStorage.getItem('token')
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/tasks/assign`,
         form,
@@ -44,6 +48,7 @@ function AdminTasks() {
       )
       setMessage('Task assigned successfully!')
       setForm({ intern: '', title: '', description: '', deadline: '' })
+      fetchData()
     } catch (err) {
       setMessage('Error assigning task')
     }
@@ -101,16 +106,26 @@ function AdminTasks() {
             </tr>
           </thead>
           <tbody>
-            {tasks.map(task => (
-              <tr key={task._id} style={{ borderBottom: '1px solid #2a4a6c' }}>
-                <td style={{ padding: '10px' }}>{task.intern?.name}</td>
-                <td style={{ padding: '10px' }}>{task.title}</td>
-                <td style={{ padding: '10px' }}>{task.status}</td>
-                <td style={{ padding: '10px' }}>
-                  {new Date(task.deadline).toLocaleDateString()}
+            {tasks.length === 0 ? (
+              <tr>
+                <td colSpan="4" style={{ padding: '20px', textAlign: 'center', color: '#94a3b8' }}>
+                  No tasks assigned yet
                 </td>
               </tr>
-            ))}
+            ) : (
+              tasks.map(task => (
+                <tr key={task._id} style={{ borderBottom: '1px solid #2a4a6c' }}>
+                  <td style={{ padding: '10px' }}>{task.intern?.name}</td>
+                  <td style={{ padding: '10px' }}>{task.title}</td>
+                  <td style={{ padding: '10px', color: task.status === 'Completed' ? '#22c55e' : task.status === 'In Progress' ? '#f59e0b' : '#94a3b8' }}>
+                    {task.status}
+                  </td>
+                  <td style={{ padding: '10px' }}>
+                    {new Date(task.deadline).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
