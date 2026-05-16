@@ -33,7 +33,18 @@ router.get("/all", auth, async (req, res) => {
   }
 });
 
-// Get tasks for specific intern
+// Get tasks for logged in intern
+router.get("/my", auth, async (req, res) => {
+  try {
+    const tasks = await Task.find({ intern: req.user._id })
+      .populate("assignedBy", "name");
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get tasks for specific intern (admin)
 router.get("/intern/:internId", auth, async (req, res) => {
   try {
     const tasks = await Task.find({ intern: req.params.internId });
