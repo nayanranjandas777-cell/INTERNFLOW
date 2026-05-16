@@ -28,11 +28,15 @@ function Profile() {
           <p style={{color:'#94a3b8', marginBottom:'30px'}}>{user?.email || 'No email found'}</p>
           <div style={{background:'#0f172a', padding:'15px', borderRadius:'8px', marginBottom:'15px'}}>
             <p style={{color:'#94a3b8', margin:0}}>Role</p>
-            <p style={{margin:0, marginTop:'5px', color:'#6366f1', fontWeight:'bold'}}>Student Intern</p>
+            <p style={{margin:0, marginTop:'5px', color:'#6366f1', fontWeight:'bold'}}>
+              {user?.role || 'Student Intern'}
+            </p>
           </div>
           <div style={{background:'#0f172a', padding:'15px', borderRadius:'8px'}}>
             <p style={{color:'#94a3b8', margin:0}}>Member Since</p>
-            <p style={{margin:0, marginTop:'5px', color:'white'}}>May 2026</p>
+            <p style={{margin:0, marginTop:'5px', color:'white'}}>
+              {user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', {month:'long', year:'numeric'}) : 'May 2026'}
+            </p>
           </div>
         </div>
       </div>
