@@ -27,6 +27,7 @@ function Navbar() {
           <Link to="/reports" style={{ color: 'white', textDecoration: 'none' }}>Reports</Link>
           <Link to="/intern/reports" style={{ color: 'white', textDecoration: 'none' }}>Submit Report</Link>
           <Link to="/intern/tasks" style={{ color: 'white', textDecoration: 'none' }}>My Tasks</Link>
+          <Link to="/intern/evaluation" style={{ color: 'white', textDecoration: 'none' }}>My Evaluation</Link>
         </>
       )}
 

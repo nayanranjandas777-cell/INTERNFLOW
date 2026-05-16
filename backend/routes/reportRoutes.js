@@ -1,45 +1,56 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/authMiddleware");
-const Report = require("../models/Report");
+const Evaluation = require("../models/Evaluation");
 
-// Intern submits report
-router.post("/submit", auth, async (req, res) => {
+// Admin creates evaluation
+router.post("/create", auth, async (req, res) => {
   try {
-    const { title, content, week } = req.body;
-    const report = new Report({
-      intern: req.user.id,
-      title,
-      content,
-      week
+    const { intern, rating, comments, performance } = req.body;
+    const evaluation = new Evaluation({
+      intern,
+      admin: req.user.id,
+      rating,
+      comments,
+      performance
     });
-    await report.save();
-    res.json({ message: "Report submitted successfully", report });
+    await evaluation.save();
+    res.json({ message: "Evaluation saved", evaluation });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Admin gets all reports
+// Get all evaluations (admin)
 router.get("/all", auth, async (req, res) => {
   try {
-    const reports = await Report.find()
-      .populate("intern", "name email");
-    res.json(reports);
+    const evaluations = await Evaluation.find()
+      .populate("intern", "name email")
+      .populate("admin", "name");
+    res.json(evaluations);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Admin marks report as reviewed
-router.put("/review/:id", auth, async (req, res) => {
+// Get my evaluations (intern)
+router.get("/my", auth, async (req, res) => {
   try {
-    const report = await Report.findByIdAndUpdate(
-      req.params.id,
-      { status: "reviewed" },
-      { new: true }
-    );
-    res.json(report);
+    const evaluations = await Evaluation.find({ intern: req.user._id })
+      .populate("admin", "name");
+    res.json(evaluations);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get evaluation for specific intern
+router.get("/:internId", auth, async (req, res) => {
+  try {
+    const evaluations = await Evaluation.find({
+      intern: req.params.internId
+    }).populate("admin", "name");
+    res.json(evaluations);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -33,6 +33,17 @@ router.get("/all", auth, async (req, res) => {
   }
 });
 
+// Get my evaluations (intern)
+router.get("/my", auth, async (req, res) => {
+  try {
+    const evaluations = await Evaluation.find({ intern: req.user._id })
+      .populate("admin", "name");
+    res.json(evaluations);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Get evaluation for specific intern
 router.get("/:internId", auth, async (req, res) => {
   try {

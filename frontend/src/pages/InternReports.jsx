@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 
@@ -12,10 +12,25 @@ const inputStyle = {
 function InternReports() {
   const [form, setForm] = useState({ title: '', content: '', week: '' })
   const [message, setMessage] = useState('')
+  const [reports, setReports] = useState([])
+  const token = localStorage.getItem('token')
+
+  useEffect(() => { fetchReports() }, [])
+
+  const fetchReports = async () => {
+    try {
+      const res = await axios.get(
+        `https://internflow-hf1d.onrender.com/api/reports/my`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setReports(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem('token')
       await axios.post(
         `https://internflow-hf1d.onrender.com/api/reports/submit`,
         form,
@@ -23,6 +38,7 @@ function InternReports() {
       )
       setMessage('Report submitted successfully!')
       setForm({ title: '', content: '', week: '' })
+      fetchReports()
     } catch (err) {
       setMessage('Error submitting report')
     }
@@ -45,6 +61,22 @@ function InternReports() {
           style={{ background: '#22c55e', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
           Submit Report
         </button>
+
+        <h3 style={{ color: 'white', marginTop: '2rem' }}>My Submitted Reports</h3>
+        {reports.length === 0 ? (
+          <p style={{ color: '#94a3b8' }}>No reports submitted yet.</p>
+        ) : (
+          reports.map(report => (
+            <div key={report._id} style={{ background: '#1e293b', padding: '15px', borderRadius: '8px', marginBottom: '10px', borderLeft: `4px solid ${report.status === 'reviewed' ? '#22c55e' : '#f59e0b'}` }}>
+              <h4 style={{ color: 'white', margin: '0 0 5px' }}>{report.title}</h4>
+              <p style={{ color: '#94a3b8', margin: '0 0 5px' }}>Week: {report.week}</p>
+              <p style={{ color: '#94a3b8', margin: '0 0 5px' }}>{report.content}</p>
+              <span style={{ color: report.status === 'reviewed' ? '#22c55e' : '#f59e0b', fontWeight: 'bold' }}>
+                Status: {report.status === 'reviewed' ? '✅ Reviewed' : '⏳ Pending Review'}
+              </span>
+            </div>
+          ))
+        )}
       </div>
     </div>
   )
