@@ -6,7 +6,7 @@ const markAttendance = async (req, res) => {
   try {
     const { status } = req.body
     const userId = req.user.id
-    const today = new Date().toISOString().split('T')[0] // "2026-05-15"
+    const today = new Date().toISOString().split('T')[0]
 
     // Check if already marked today
     const existing = await Attendance.findOne({ userId, date: today })
@@ -45,9 +45,9 @@ const getStats = async (req, res) => {
   try {
     const today = new Date().toISOString().split('T')[0]
 
-    const total = await User.countDocuments({ role: 'student' })
+    const total = await User.countDocuments({ role: { $ne: 'admin' } })
     const present = await Attendance.countDocuments({ date: today, status: 'Present' })
-    const absent = total - present
+    const absent = total - present < 0 ? 0 : total - present
 
     res.json({ total, present, absent })
   } catch (err) {
