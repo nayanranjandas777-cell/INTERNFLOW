@@ -21,6 +21,7 @@ function Reports() {
 
   const present = records.filter(r => r.status === 'Present').length
   const absent = records.filter(r => r.status === 'Absent').length
+  const totalDays = new Set(records.map(r => r.date)).size
   const pieData = [{ name: 'Present', value: present }, { name: 'Absent', value: absent }]
   const barData = records.map(r => ({
     date: r.date,
@@ -47,7 +48,7 @@ function Reports() {
           </div>
           <div style={{ background:'#1e293b', padding:'25px', borderRadius:'10px', flex:1 }}>
             <h3 style={{ color:'#6366f1' }}>Total Days</h3>
-            <h1 style={{ color:'white' }}>{records.length}</h1>
+            <h1 style={{ color:'white' }}>{totalDays}</h1>
           </div>
         </div>
 
