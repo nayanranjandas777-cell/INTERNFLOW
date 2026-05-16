@@ -8,22 +8,15 @@ const markAttendance = async (req, res) => {
     const userId = req.user.id
     const today = new Date().toISOString().split('T')[0]
 
-    // Check if already marked today
     const existing = await Attendance.findOne({ userId, date: today })
     if (existing) {
       return res.status(400).json({ message: 'Attendance already marked today' })
     }
 
-    // Get user name
     const user = await User.findById(userId)
-
     const attendance = await Attendance.create({
-      userId,
-      name: user.name,
-      date: today,
-      status
+      userId, name: user.name, date: today, status
     })
-
     res.status(201).json(attendance)
   } catch (err) {
     res.status(500).json({ message: err.message })
@@ -44,23 +37,42 @@ const getMyAttendance = async (req, res) => {
 const getStats = async (req, res) => {
   try {
     const today = new Date().toISOString().split('T')[0]
-
-    // Get only intern user IDs (exclude admin)
     const interns = await User.find({ role: 'student' }).select('_id')
     const internIds = interns.map(i => i._id)
-
     const total = internIds.length
     const present = await Attendance.countDocuments({
-      date: today,
-      status: 'Present',
-      userId: { $in: internIds }
+      date: today, status: 'Present', userId: { $in: internIds }
     })
     const absent = total - present < 0 ? 0 : total - present
-
     res.json({ total, present, absent })
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
 }
 
-module.exports = { markAttendance, getMyAttendance, getStats }
+// Get All Interns Attendance (Admin)
+const getAllAttendance = async (req, res) => {
+  try {
+    const interns = await User.find({ role: 'student' }).select('name email')
+    const today = new Date().toISOString().split('T')[0]
+
+    const result = await Promise.all(interns.map(async (intern) => {
+      const records = await Attendance.find({ userId: intern._id }).sort({ date: -1 })
+      const todayRecord = records.find(r => r.date === today)
+      return {
+        _id: intern._id,
+        name: intern.name,
+        email: intern.email,
+        todayStatus: todayRecord ? todayRecord.status : 'Not Marked',
+        totalDays: records.length,
+        records: records.slice(0, 7) // last 7 days
+      }
+    }))
+
+    res.json(result)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
+module.exports = { markAttendance, getMyAttendance, getStats, getAllAttendance }
