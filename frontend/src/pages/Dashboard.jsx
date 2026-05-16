@@ -1,15 +1,13 @@
-import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 
 function Dashboard() {
-  const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem('user'))
   const [stats, setStats] = useState({ total: 0, present: 0, absent: 0 })
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/api/attendance/stats`, {
+    axios.get(`https://internflow-hf1d.onrender.com/api/attendance/stats`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
     .then(res => setStats(res.data))

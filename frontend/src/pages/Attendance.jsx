@@ -15,7 +15,7 @@ function Attendance() {
   const fetchAttendance = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/attendance/my`,
+        `https://internflow-hf1d.onrender.com/api/attendance/my`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setRecords(res.data)
@@ -25,7 +25,7 @@ function Attendance() {
   const markAttendance = async () => {
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/attendance/mark`,
+        `https://internflow-hf1d.onrender.com/api/attendance/mark`,
         { name: user.name, date: today, status },
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -42,7 +42,6 @@ function Attendance() {
       <div style={{ flex:1, padding:'30px' }}>
         <h1 style={{ marginBottom:'5px', color:'white' }}>Attendance</h1>
         <p style={{ color:'#94a3b8', marginBottom:'30px' }}>Mark your attendance for today: {today}</p>
-
         <div style={{ background:'#1e293b', padding:'25px', borderRadius:'10px', marginBottom:'30px', width:'400px' }}>
           <h3 style={{ marginBottom:'15px', color:'white' }}>Mark Today's Attendance</h3>
           <select
@@ -61,7 +60,6 @@ function Attendance() {
           </button>
           {message && <p style={{ color:'#22c55e', marginTop:'10px', textAlign:'center' }}>{message}</p>}
         </div>
-
         <div style={{ background:'#1e293b', padding:'25px', borderRadius:'10px' }}>
           <h3 style={{ marginBottom:'15px', color:'white' }}>My Attendance Records</h3>
           <table style={{ width:'100%', borderCollapse:'collapse' }}>
@@ -73,8 +71,23 @@ function Attendance() {
             </thead>
             <tbody>
               {records.length === 0 ? (
-                <tr><td colSpan="2" style={{ padding:'20px', textAlign:'center', color:'#94a3b8' }}>No records yet</td></tr>
+                <tr>
+                  <td colSpan="2" style={{ padding:'20px', textAlign:'center', color:'#94a3b8' }}>No records yet</td>
+                </tr>
               ) : (
                 records.map(record => (
                   <tr key={record._id} style={{ borderBottom:'1px solid #334155' }}>
                     <td style={{ padding:'10px', color:'white' }}>{record.date}</td>
+                    <td style={{ padding:'10px', color: record.status === 'Present' ? '#22c55e' : '#ef4444' }}>{record.status}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Attendance

@@ -12,7 +12,7 @@ function Reports() {
   const fetchRecords = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/attendance/my`,
+        `https://internflow-hf1d.onrender.com/api/attendance/my`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setRecords(res.data)

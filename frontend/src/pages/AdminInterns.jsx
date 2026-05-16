@@ -9,7 +9,7 @@ function AdminInterns() {
     const fetchInterns = async () => {
       const token = localStorage.getItem('token')
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/auth/interns`,
+        `https://internflow-hf1d.onrender.com/api/auth/interns`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setInterns(res.data)
@@ -18,7 +18,7 @@ function AdminInterns() {
   }, [])
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', background: '#0f172a', minHeight: '100vh' }}>
       <Navbar />
       <div style={{ padding: '2rem', flex: 1 }}>
         <h2 style={{ color: 'white' }}>All Interns</h2>
@@ -27,6 +27,7 @@ function AdminInterns() {
             <tr style={{ background: '#1a3a5c' }}>
               <th style={{ padding: '10px' }}>Name</th>
               <th style={{ padding: '10px' }}>Email</th>
+              <th style={{ padding: '10px' }}>Department</th>
               <th style={{ padding: '10px' }}>Joined</th>
             </tr>
           </thead>
@@ -35,9 +36,8 @@ function AdminInterns() {
               <tr key={intern._id} style={{ borderBottom: '1px solid #2a4a6c' }}>
                 <td style={{ padding: '10px' }}>{intern.name}</td>
                 <td style={{ padding: '10px' }}>{intern.email}</td>
-                <td style={{ padding: '10px' }}>
-                  {new Date(intern.createdAt).toLocaleDateString()}
-                </td>
+                <td style={{ padding: '10px' }}>{intern.department || 'N/A'}</td>
+                <td style={{ padding: '10px' }}>{new Date(intern.createdAt).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>

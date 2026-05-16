@@ -10,16 +10,14 @@ const inputStyle = {
 }
 
 function InternReports() {
-  const [form, setForm] = useState({
-    title: '', content: '', week: ''
-  })
+  const [form, setForm] = useState({ title: '', content: '', week: '' })
   const [message, setMessage] = useState('')
 
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem('token')
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/reports/submit`,
+        `https://internflow-hf1d.onrender.com/api/reports/submit`,
         form,
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -36,28 +34,15 @@ function InternReports() {
       <div style={{ padding: '2rem', flex: 1 }}>
         <h2 style={{ color: 'white' }}>Submit Weekly Report</h2>
         {message && <p style={{ color: 'lightgreen' }}>{message}</p>}
-        <input
-          placeholder="Report Title"
-          value={form.title}
-          onChange={e => setForm({ ...form, title: e.target.value })}
-          style={inputStyle}
-        />
-        <input
-          placeholder="Week (e.g. Week 1)"
-          value={form.week}
-          onChange={e => setForm({ ...form, week: e.target.value })}
-          style={inputStyle}
-        />
-        <textarea
-          placeholder="Report Content"
-          value={form.content}
+        <input placeholder="Report Title" value={form.title}
+          onChange={e => setForm({ ...form, title: e.target.value })} style={inputStyle} />
+        <input placeholder="Week (e.g. Week 1)" value={form.week}
+          onChange={e => setForm({ ...form, week: e.target.value })} style={inputStyle} />
+        <textarea placeholder="Report Content" value={form.content}
           onChange={e => setForm({ ...form, content: e.target.value })}
-          style={{ ...inputStyle, height: '200px' }}
-        />
-        <button
-          onClick={handleSubmit}
-          style={{ background: '#22c55e', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-        >
+          style={{ ...inputStyle, height: '200px' }} />
+        <button onClick={handleSubmit}
+          style={{ background: '#22c55e', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
           Submit Report
         </button>
       </div>
