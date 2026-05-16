@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 function Navbar() {
   const navigate = useNavigate()
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
+  const [user] = useState(JSON.parse(localStorage.getItem('user')))
 
   const logout = () => {
     localStorage.removeItem('token')
@@ -20,9 +20,16 @@ function Navbar() {
       <h2 style={{ color: '#38bdf8', marginBottom: '1rem' }}>InternFlow</h2>
 
       <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</Link>
-      <Link to="/attendance" style={{ color: 'white', textDecoration: 'none' }}>Attendance</Link>
-      <Link to="/reports" style={{ color: 'white', textDecoration: 'none' }}>Reports</Link>
-      <Link to="/intern/reports" style={{ color: 'white', textDecoration: 'none' }}>Submit Report</Link>
+
+      {user?.role !== 'admin' && (
+        <>
+          <Link to="/attendance" style={{ color: 'white', textDecoration: 'none' }}>Attendance</Link>
+          <Link to="/reports" style={{ color: 'white', textDecoration: 'none' }}>Reports</Link>
+          <Link to="/intern/reports" style={{ color: 'white', textDecoration: 'none' }}>Submit Report</Link>
+          <Link to="/intern/tasks" style={{ color: 'white', textDecoration: 'none' }}>My Tasks</Link>
+        </>
+      )}
+
       <Link to="/profile" style={{ color: 'white', textDecoration: 'none' }}>Profile</Link>
 
       {user?.role === 'admin' && (
