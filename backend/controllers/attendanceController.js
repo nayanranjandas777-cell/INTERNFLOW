@@ -45,8 +45,16 @@ const getStats = async (req, res) => {
   try {
     const today = new Date().toISOString().split('T')[0]
 
-    const total = await User.countDocuments({ role: { $ne: 'admin' } })
-    const present = await Attendance.countDocuments({ date: today, status: 'Present' })
+    // Get only intern user IDs (exclude admin)
+    const interns = await User.find({ role: 'student' }).select('_id')
+    const internIds = interns.map(i => i._id)
+
+    const total = internIds.length
+    const present = await Attendance.countDocuments({
+      date: today,
+      status: 'Present',
+      userId: { $in: internIds }
+    })
     const absent = total - present < 0 ? 0 : total - present
 
     res.json({ total, present, absent })
