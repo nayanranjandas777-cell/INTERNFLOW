@@ -16,11 +16,11 @@ function AdminTasks() {
     intern: '', title: '', description: '', deadline: ''
   })
   const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState('success')
+  const [assigning, setAssigning] = useState(false)
   const token = localStorage.getItem('token')
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+  useEffect(() => { fetchData() }, [])
 
   const fetchData = async () => {
     try {
@@ -40,6 +40,17 @@ function AdminTasks() {
   }
 
   const handleAssign = async () => {
+    if (assigning) return
+
+    if (!form.intern || !form.title.trim() || !form.description.trim() || !form.deadline) {
+      setMessage('Please fill in all fields before assigning.')
+      setMessageType('error')
+      return
+    }
+
+    setAssigning(true)
+    setMessage('')
+
     try {
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/tasks/assign`,
@@ -47,10 +58,15 @@ function AdminTasks() {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setMessage('Task assigned successfully!')
+      setMessageType('success')
       setForm({ intern: '', title: '', description: '', deadline: '' })
       fetchData()
     } catch (err) {
-      setMessage('Error assigning task')
+      const errMsg = err.response?.data?.message || 'Error assigning task. Please try again.'
+      setMessage(errMsg)
+      setMessageType('error')
+    } finally {
+      setAssigning(false)
     }
   }
 
@@ -59,40 +75,64 @@ function AdminTasks() {
       <Navbar />
       <div style={{ padding: '2rem', flex: 1 }}>
         <h2 style={{ color: 'white' }}>Assign Tasks</h2>
-        {message && <p style={{ color: 'lightgreen' }}>{message}</p>}
+
+        {message && (
+          <p style={{
+            color: messageType === 'success' ? 'lightgreen' : '#f87171',
+            background: messageType === 'success' ? '#14532d44' : '#7f1d1d44',
+            padding: '10px', borderRadius: '6px', marginBottom: '10px'
+          }}>
+            {message}
+          </p>
+        )}
+
         <select
           value={form.intern}
           onChange={e => setForm({ ...form, intern: e.target.value })}
           style={inputStyle}
+          disabled={assigning}
         >
           <option value="">Select Intern</option>
           {interns.map(i => (
             <option key={i._id} value={i._id}>{i.name}</option>
           ))}
         </select>
+
         <input
           placeholder="Task Title"
           value={form.title}
           onChange={e => setForm({ ...form, title: e.target.value })}
           style={inputStyle}
+          disabled={assigning}
         />
+
         <textarea
           placeholder="Task Description"
           value={form.description}
           onChange={e => setForm({ ...form, description: e.target.value })}
           style={{ ...inputStyle, height: '80px' }}
+          disabled={assigning}
         />
+
         <input
           type="date"
           value={form.deadline}
           onChange={e => setForm({ ...form, deadline: e.target.value })}
           style={inputStyle}
+          disabled={assigning}
         />
+
         <button
           onClick={handleAssign}
-          style={{ background: '#22c55e', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+          disabled={assigning}
+          style={{
+            background: assigning ? '#166534' : '#22c55e',
+            color: 'white', padding: '10px 20px', border: 'none',
+            borderRadius: '5px', cursor: assigning ? 'not-allowed' : 'pointer',
+            opacity: assigning ? 0.7 : 1
+          }}
         >
-          Assign Task
+          {assigning ? 'Assigning...' : 'Assign Task'}
         </button>
 
         <h3 style={{ color: 'white', marginTop: '2rem' }}>All Tasks</h3>
