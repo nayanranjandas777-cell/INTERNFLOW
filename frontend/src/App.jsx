@@ -10,6 +10,7 @@ import AdminEvaluate from './pages/AdminEvaluate'
 import AdminTasks from './pages/AdminTasks'
 import AdminReports from './pages/AdminReports'
 import InternReports from './pages/InternReports'
+import InternTasks from './pages/InternTasks'
 import Onboarding from './pages/Onboarding'
 import AdminMonitor from './pages/AdminMonitor'
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/admin/tasks" element={<AdminTasks />} />
         <Route path="/admin/reports" element={<AdminReports />} />
         <Route path="/intern/reports" element={<InternReports />} />
+        <Route path="/intern/tasks" element={<InternTasks />} />
         <Route path="/admin/monitor" element={<AdminMonitor />} />
       </Routes>
     </BrowserRouter>
