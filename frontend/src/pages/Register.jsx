@@ -6,6 +6,7 @@ function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [adminCode, setAdminCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -89,9 +90,26 @@ function Register() {
           style={{ marginBottom: '4px' }} />
 
         <label style={{ fontWeight: '600', color: '#0f172a', fontSize: '0.85rem' }}>Password</label>
-        <input type="password" placeholder="Enter your password" value={password}
-          onChange={e => setPassword(e.target.value)} disabled={loading}
-          style={{ marginBottom: '4px' }} />
+        <div style={{ position: 'relative' }}>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Enter your password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            disabled={loading}
+            style={{ paddingRight: '48px', marginBottom: '4px' }}
+          />
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            style={{
+              position: 'absolute', right: '14px', top: '40%',
+              transform: 'translateY(-50%)', cursor: 'pointer',
+              fontSize: '1.1rem', userSelect: 'none'
+            }}
+          >
+            {showPassword ? '🙈' : '👁️'}
+          </span>
+        </div>
 
         <label style={{ fontWeight: '600', color: '#0f172a', fontSize: '0.85rem' }}>
           Admin Code <span style={{ color: '#64748b', fontWeight: '400' }}>(optional)</span>

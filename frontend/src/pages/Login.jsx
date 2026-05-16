@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -61,9 +62,7 @@ function Login() {
           }}>
             🚀
           </div>
-          <h2 style={{
-            fontSize: '1.8rem', fontWeight: '800', color: '#0f172a', marginBottom: '6px'
-          }}>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#0f172a', marginBottom: '6px' }}>
             Welcome back
           </h2>
           <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
@@ -82,7 +81,7 @@ function Login() {
           </div>
         )}
 
-        {/* Fields */}
+        {/* Email */}
         <div style={{ marginBottom: '4px' }}>
           <label style={{ fontWeight: '600', color: '#0f172a', fontSize: '0.9rem' }}>
             Email Address
@@ -96,17 +95,31 @@ function Login() {
           />
         </div>
 
+        {/* Password */}
         <div style={{ marginBottom: '8px' }}>
           <label style={{ fontWeight: '600', color: '#0f172a', fontSize: '0.9rem' }}>
             Password
           </label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
+          <div style={{ position: 'relative' }}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Enter your password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{ paddingRight: '48px', marginBottom: '0' }}
+            />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute', right: '14px', top: '50%',
+                transform: 'translateY(-50%)', cursor: 'pointer',
+                fontSize: '1.1rem', userSelect: 'none'
+              }}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </span>
+          </div>
         </div>
 
         {/* Button */}
@@ -119,18 +132,10 @@ function Login() {
         </button>
 
         {/* Register link */}
-        <p style={{
-          textAlign: 'center', marginTop: '24px',
-          color: '#64748b', fontSize: '0.9rem'
-        }}>
+        <p style={{ textAlign: 'center', marginTop: '24px', color: '#64748b', fontSize: '0.9rem' }}>
           Don't have an account?{' '}
-          <span
-            onClick={() => navigate('/register')}
-            style={{
-              color: '#4f46e5', fontWeight: '600',
-              cursor: 'pointer', textDecoration: 'underline'
-            }}
-          >
+          <span onClick={() => navigate('/register')}
+            style={{ color: '#4f46e5', fontWeight: '600', cursor: 'pointer', textDecoration: 'underline' }}>
             Register here
           </span>
         </p>
