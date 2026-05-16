@@ -6,6 +6,7 @@ function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [adminCode, setAdminCode] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
@@ -13,7 +14,7 @@ function Register() {
     try {
       const res = await axios.post(
         `https://internflow-hf1d.onrender.com/api/auth/register`,
-        { name, email, password }
+        { name, email, password, adminCode }
       )
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', JSON.stringify(res.data.user))
@@ -33,6 +34,8 @@ function Register() {
         <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)}
           style={{ width:'100%', padding:'10px', marginBottom:'10px', borderRadius:'5px', border:'none', boxSizing:'border-box' }} />
         <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)}
+          style={{ width:'100%', padding:'10px', marginBottom:'10px', borderRadius:'5px', border:'none', boxSizing:'border-box' }} />
+        <input placeholder="Admin Code (optional, leave blank if intern)" value={adminCode} onChange={e => setAdminCode(e.target.value)}
           style={{ width:'100%', padding:'10px', marginBottom:'20px', borderRadius:'5px', border:'none', boxSizing:'border-box' }} />
         <button onClick={handleRegister}
           style={{ width:'100%', padding:'10px', background:'#6366f1', color:'white', border:'none', borderRadius:'5px', cursor:'pointer', fontSize:'16px' }}>
