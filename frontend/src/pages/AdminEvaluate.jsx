@@ -2,6 +2,13 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 
+const inputStyle = {
+  display: 'block', margin: '10px 0', padding: '8px',
+  width: '100%', background: '#1e293b', color: 'white',
+  border: '1px solid #2a4a6c', borderRadius: '5px',
+  boxSizing: 'border-box'
+}
+
 function AdminEvaluate() {
   const [interns, setInterns] = useState([])
   const [form, setForm] = useState({
@@ -37,7 +44,7 @@ function AdminEvaluate() {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', background: '#0f172a', minHeight: '100vh' }}>
       <Navbar />
       <div style={{ padding: '2rem', flex: 1 }}>
         <h2 style={{ color: 'white' }}>Evaluate Intern</h2>
@@ -45,7 +52,7 @@ function AdminEvaluate() {
         <select
           value={form.intern}
           onChange={e => setForm({ ...form, intern: e.target.value })}
-          style={{ display: 'block', margin: '10px 0', padding: '8px', width: '100%' }}
+          style={inputStyle}
         >
           <option value="">Select Intern</option>
           {interns.map(i => (
@@ -57,12 +64,12 @@ function AdminEvaluate() {
           placeholder="Rating (1-5)"
           value={form.rating}
           onChange={e => setForm({ ...form, rating: e.target.value })}
-          style={{ display: 'block', margin: '10px 0', padding: '8px', width: '100%' }}
+          style={inputStyle}
         />
         <select
           value={form.performance}
           onChange={e => setForm({ ...form, performance: e.target.value })}
-          style={{ display: 'block', margin: '10px 0', padding: '8px', width: '100%' }}
+          style={inputStyle}
         >
           <option>Excellent</option>
           <option>Good</option>
@@ -73,7 +80,7 @@ function AdminEvaluate() {
           placeholder="Comments"
           value={form.comments}
           onChange={e => setForm({ ...form, comments: e.target.value })}
-          style={{ display: 'block', margin: '10px 0', padding: '8px', width: '100%', height: '100px' }}
+          style={{ ...inputStyle, height: '100px' }}
         />
         <button
           onClick={handleSubmit}
