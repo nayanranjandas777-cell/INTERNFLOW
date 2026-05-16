@@ -17,4 +17,18 @@ router.get("/interns", auth, async (req, res) => {
   }
 });
 
+router.post("/onboarding", auth, async (req, res) => {
+  try {
+    const { department, startDate, skills, bio } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { department, startDate, skills, bio, onboarded: true },
+      { new: true }
+    ).select("-password");
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;

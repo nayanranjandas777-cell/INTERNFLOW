@@ -17,7 +17,7 @@ function Register() {
       )
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', JSON.stringify(res.data.user))
-      navigate('/dashboard')
+      navigate('/onboarding')
     } catch (err) {
       setError('User already exists or invalid data')
     }

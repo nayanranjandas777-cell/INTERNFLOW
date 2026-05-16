@@ -10,6 +10,7 @@ import AdminEvaluate from './pages/AdminEvaluate'
 import AdminTasks from './pages/AdminTasks'
 import AdminReports from './pages/AdminReports'
 import InternReports from './pages/InternReports'
+import Onboarding from './pages/Onboarding'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/attendance" element={<Attendance />} />
         <Route path="/reports" element={<Reports />} />
