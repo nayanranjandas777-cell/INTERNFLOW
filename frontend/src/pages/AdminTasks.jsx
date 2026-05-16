@@ -2,6 +2,13 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 
+const inputStyle = {
+  display: 'block', margin: '10px 0', padding: '8px',
+  width: '100%', background: '#1e293b', color: 'white',
+  border: '1px solid #2a4a6c', borderRadius: '5px',
+  boxSizing: 'border-box'
+}
+
 function AdminTasks() {
   const [interns, setInterns] = useState([])
   const [tasks, setTasks] = useState([])
@@ -43,7 +50,7 @@ function AdminTasks() {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', background: '#0f172a', minHeight: '100vh' }}>
       <Navbar />
       <div style={{ padding: '2rem', flex: 1 }}>
         <h2 style={{ color: 'white' }}>Assign Tasks</h2>
@@ -51,7 +58,7 @@ function AdminTasks() {
         <select
           value={form.intern}
           onChange={e => setForm({ ...form, intern: e.target.value })}
-          style={{ display: 'block', margin: '10px 0', padding: '8px', width: '100%' }}
+          style={inputStyle}
         >
           <option value="">Select Intern</option>
           {interns.map(i => (
@@ -62,19 +69,19 @@ function AdminTasks() {
           placeholder="Task Title"
           value={form.title}
           onChange={e => setForm({ ...form, title: e.target.value })}
-          style={{ display: 'block', margin: '10px 0', padding: '8px', width: '100%' }}
+          style={inputStyle}
         />
         <textarea
           placeholder="Task Description"
           value={form.description}
           onChange={e => setForm({ ...form, description: e.target.value })}
-          style={{ display: 'block', margin: '10px 0', padding: '8px', width: '100%', height: '80px' }}
+          style={{ ...inputStyle, height: '80px' }}
         />
         <input
           type="date"
           value={form.deadline}
           onChange={e => setForm({ ...form, deadline: e.target.value })}
-          style={{ display: 'block', margin: '10px 0', padding: '8px', width: '100%' }}
+          style={inputStyle}
         />
         <button
           onClick={handleAssign}
