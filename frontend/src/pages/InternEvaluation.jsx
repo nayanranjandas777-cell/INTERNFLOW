@@ -33,7 +33,7 @@ function InternEvaluation() {
           evaluations.map(ev => (
             <div key={ev._id} style={{ background: '#1e293b', padding: '20px', borderRadius: '8px', marginBottom: '15px', borderLeft: '4px solid #6366f1' }}>
               <p style={{ color: '#94a3b8', margin: '0 0 8px' }}>
-                Evaluated by: <span style={{ color: 'white' }}>{ev.evaluatedBy?.name || 'Admin'}</span>
+                Evaluated by: <span style={{ color: 'white' }}>{ev.admin?.name || 'Admin'}</span>
               </p>
               <p style={{ color: '#94a3b8', margin: '0 0 8px' }}>
                 Performance: <span style={{ color: '#22c55e', fontWeight: 'bold' }}>{ev.performance}</span>
