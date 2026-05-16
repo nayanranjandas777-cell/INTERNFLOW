@@ -22,6 +22,7 @@ function Navbar() {
       <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</Link>
       <Link to="/attendance" style={{ color: 'white', textDecoration: 'none' }}>Attendance</Link>
       <Link to="/reports" style={{ color: 'white', textDecoration: 'none' }}>Reports</Link>
+      <Link to="/intern/reports" style={{ color: 'white', textDecoration: 'none' }}>Submit Report</Link>
       <Link to="/profile" style={{ color: 'white', textDecoration: 'none' }}>Profile</Link>
 
       {user?.role === 'admin' && (

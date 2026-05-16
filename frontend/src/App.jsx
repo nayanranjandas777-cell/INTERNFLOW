@@ -9,6 +9,7 @@ import AdminInterns from './pages/AdminInterns'
 import AdminEvaluate from './pages/AdminEvaluate'
 import AdminTasks from './pages/AdminTasks'
 import AdminReports from './pages/AdminReports'
+import InternReports from './pages/InternReports'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/admin/evaluate" element={<AdminEvaluate />} />
         <Route path="/admin/tasks" element={<AdminTasks />} />
         <Route path="/admin/reports" element={<AdminReports />} />
+        <Route path="/intern/reports" element={<InternReports />} />
       </Routes>
     </BrowserRouter>
   )
