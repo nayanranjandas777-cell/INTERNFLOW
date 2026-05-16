@@ -33,6 +33,7 @@ function Navbar() {
           <Link to="/admin/evaluate" style={{ color: '#38bdf8', textDecoration: 'none' }}>Evaluate</Link>
           <Link to="/admin/tasks" style={{ color: '#38bdf8', textDecoration: 'none' }}>Tasks</Link>
           <Link to="/admin/reports" style={{ color: '#38bdf8', textDecoration: 'none' }}>Admin Reports</Link>
+          <Link to="/admin/monitor" style={{ color: '#38bdf8', textDecoration: 'none' }}>Execution Monitor</Link>
         </>
       )}
 
